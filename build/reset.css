@@ -1,0 +1,30 @@
+/* Box-sizing for all elements */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Default body styles */
+body {
+    min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Remove list styles */
+ul, ol {
+    list-style: none;
+}
+
+/* Anchor defaults */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Button styles reset */
+button {
+    all: unset;
+    cursor: pointer;
+}

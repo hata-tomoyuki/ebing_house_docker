@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+<link href="{% static 'style2.css' %}" rel="stylesheet">
+{% block header %}
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">メモ２リスト</h1>
+    </div>
+  </div>
+
+<style>
+ .date {
+    flex: 0 0 60; 
+    overflow: hidden; /* テキストが長すぎる場合は隠す */
+    text-overflow: ellipsis; /* テキストが長すぎる場合は省略記号を表示 */
+    padding-left: 10px; /* 少しの間隔を設定 */
+}
+
+  #hoverMenu {
+        position: fixed;
+        width: 100px;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: #333;
+        color: white;
+
+        text-align: center;
+        overflow: hidden; 
+        transition: width 0.2s ease;
+    }
+
+  #hoverMenu a {
+        margin-bottom: 20px ;
+        display:block;
+    }
+
+
+  @media (max-width: 576px) {
+    #hoverMenu {
+        position: fixed; /* 最上部に固定 */
+        top: 0;          /* 画面の一番上に */
+        left: 0;         /* 左に固定 */
+        width: 100%;     /* 幅を100%に */
+        height: 6%;    /* 高さは自動調整 */
+        background-color: #333;
+    }
+
+    /* メニュー内のリンクを横並びに */
+    #hoverMenu a {
+        display: inline-block;
+        width: auto;
+        margin-right: 15px;
+        font-size: 1.5rem;
+        margin-bottom: 0px ;
+    }
+}
+</style>
+
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+  {% for item in object_list %}
+  <div class="word-and-buttons">
+    <span class="word">{{ item.memo1 }}</span>
+    <span class="mean1">{{ item.memo2 }}</span>
+    <!-- <span class="mean2">{{ item.mean2 }}</span> -->
+    <span class="date">{{ item.reg_date | date:"n月j日"}}</span>
+    <div class="buttons">
+    <a href ="{% url 'wlist:mc_update' item.pk %}" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">編集</a>
+    <a href ="{% url 'wlist:mc_delete' item.pk %}" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">削除</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/cardslide.js' %}"></script>
+
+<div id="hoverMenu">
+    <a href="/" >TOP</a>
+    <a href="/accounts/login">LOG OUT</a>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const hoverMenu = document.getElementById('hoverMenu');
+
+      if (window.innerWidth >576){
+      window.addEventListener('mousemove', function(e) {
+          if (e.clientX < 100) {
+              hoverMenu.style.width = '100px'; 
+          } else {
+              hoverMenu.style.width = '0';             }
+      });
+    }
+  });
+</script>
+
+{% endblock content%}

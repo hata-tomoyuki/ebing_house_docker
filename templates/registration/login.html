@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %} ログイン {% endblock %}
+
+{% block head %}
+{% load static%}
+<link href="{% static 'style2.css' %}" rel="stylesheet">
+
+<style>
+    body, html {
+        width:100%;
+        height: 100%; /* 全体の高さを設定 */
+        margin: 0; /* マージンをリセット */
+        display: flex;
+        justify-content: flex-start; /* 横方向に中央揃え */
+        align-items: flex-start; /* 縦方向の中央揃えを解除 */
+        overflow: auto; /* スクロールを有効にする */
+    }
+
+    .container {
+        width: 100%; /* コンテナの幅を100%に設定 */
+        max-width: 650px; /* 最大幅を設定 */
+        padding: 2%; /* 内側の余白を設定 */
+        box-sizing: border-box; /* 幅と高さにパディングとボーダーを含む */
+        margin: 0 auto;   
+    }
+
+    h1 {
+      white-space: nowrap;
+    }
+     
+    a {
+      margin-right: 5rem;
+    }
+
+  @media screen and (max-width: 576px) {
+    h1 {
+      font-size: 1.5rem;
+      color:red;
+    }
+    a{
+      margin-right: 1rem;
+    }
+
+}
+
+
+</style>
+
+{% endblock head %}
+
+{% block content %}
+<!-- <div style="width:750px;"> -->
+<div class="container">
+    <h1 style="margin-bottom: 1rem; margin-top: 15%; margin-left: 1rem;"> Ebing House 英単語帳＆メモ帳</h1>
+    <div style="display: flex; justify-content: flex-end; width: 100%;">
+        <a href ="{% url 'accounts:signup' %}" class="btn btn-secondary" 
+        role="button" aria-disabled="true" style="margin-right: 10px; margin-bottom:2rem;">sign up</a>
+        <a href ="{% url 'password_reset' %}" class="btn btn-secondary" 
+        role="button" aria-disabled="true" style="margin-left: 10px; margin-bottom:2rem;">パスワード再設定</a>
+    </div>
+    <form method="post" style="align-items: flex-start; margin-left: 4rem;">
+    <h5 style="margin-bottom: 1rem;"> ログイン</h5>
+       {% csrf_token %}
+        {{ form.as_p }}
+    <button type ="submit" style="margin-top: 1rem;">ログイン</button>
+    </form>
+</div>
+
+{% endblock %}

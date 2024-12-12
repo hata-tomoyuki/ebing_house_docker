@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link href="{% static 'style2.css' %}" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+    }
+    #flashcard-container {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+    }
+    .flashcard {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        justify-content: center;
+        align-items: center;
+        /* font-size: 2em; */
+        text-align: center;
+        background: whitesmoke;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        transition: transform 0.5s ease-in-out;
+    }
+    .flashcard.hidden {
+        display: none;
+    }
+
+    .upperpart {
+        align-content: center;
+        background: #f0f0f0;
+        font-size: 2rem; 
+        padding: 3rem;
+    }
+
+    .no-data {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; 
+        font-size: 24px; 
+        font-weight: bold; 
+        text-align: center;
+    }
+
+    @media (max-width: 576px){
+     #hoverMenu {
+        position: fixed; /* 最上部に固定 */
+        top: 0;          /* 画面の一番上に */
+        left: 0;         /* 左に固定 */
+        width: 100%;     /* 幅を100%に */
+        height: 6%;    /* 高さは自動調整 */
+        background-color: #333;
+    }
+    #hoverMenu a {
+        display: inline-block;
+        width: auto;
+        margin-right: 15px;
+        font-size: 1.5rem;
+        margin-bottom: 0px ;
+    }
+    a.mobile-hide {
+        display: none;
+    }
+    .upperpart {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 1.5rem;
+        padding: 1rem;
+    }
+  }
+
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hoverMenu = document.getElementById('hoverMenu');
+        
+        if (window.innerWidth > 567){
+        window.addEventListener('mousemove', function(e) {
+            if (e.clientX < 100) {
+                hoverMenu.style.width = '100px'; 
+            } else {
+                hoverMenu.style.width = '0';             }
+        });
+    }
+    });
+
+</script>
+{% endblock head %}
+
+{% block content %}
+
+<div id="flashcard-container">
+    {% for card in passed_records %}
+    <div class="flashcard {% if not forloop.first %}hidden{% endif %}" data-index="{{ forloop.counter0 }}">
+        <div class = 'upperpart' style="height:100%; ">{{ card.memo }}</div>
+        <!-- <div class = 'underpart graystatus' style="height:40%; ">{{ card.memo }}</div> -->
+    </div>
+
+    {% empty %}
+    <div class="no-data">
+        記録されているメモがありません。
+        <div>
+        <a href="/main" class="button">戻る</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+    <!-- <div class="flashcard" data-index="0">Word 1: Meaning 1</div>
+    <div class="flashcard hidden" data-index="1">Word 2: Meaning 2</div>
+    <div class="flashcard hidden" data-index="2">Word 3: Meaning 3</div>
+    <div class="flashcard hidden" data-index="3">Word 4: Meaning 4</div> -->
+    <!-- 他のカードもここに追加 -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/cardslide.js' %}"></script>
+
+<div id="hoverMenu">
+    <a href="/" >TOP</a>
+    <a href="/wlist/list_memo" >メモ帳編集</a>
+    <a href="/accounts/login" class="mobile-hide">LOG OUT</a>
+</div>
+
+
+
+<!-- <div style="display: flex; flex-direction: column; align-items: center; width: 1000px;">
+
+  <div style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;">
+  {% for record in passed_records %}
+  <ul style="width: 100%; display: flex; justify-content: space-between;">
+      <li style="display: flex; width: 100%;">
+        <span style="flex: 1;">{{ record.word }}</span>
+        <span style="flex: 1;">{{ record.mean1 }}</span>
+        <span style="flex: 7;">{{ record.mean2 }}</span>
+      </li>
+  </ul>
+  {% empty %}
+    本日の記録はありません。
+  {% endfor %}
+</div>
+</div> -->
+
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link href="{% static 'style2.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block content %}
+
+<form action = '' method='POST' style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+{% csrf_token %}
+<label style="margin-bottom: 10px;">new memo:</label>
+
+<textarea name="{{ form.memo.name }}" style="width: 400px; height: 150px; padding: 10px; font-size: 16px; margin-bottom: 10px; resize: vertical;" placeholder="">{{ form.memo.value|default_if_none:'' }}</textarea>
+<input type="submit" value="create" style="width: 80px; height: 30px; font-size: 16px;">
+
+</form>
+
+{% endblock content %}

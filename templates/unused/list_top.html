@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+<link href="{% static 'style.css' %}" rel="stylesheet">
+
+
+{% block header %}
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">単語リスト</h1>
+    </div>
+  </div>
+
+  <style>
+    #hoverMenu {
+      position: fixed;
+      width: 100px;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: #333;
+      color: white;
+  
+      text-align: center;
+      overflow: hidden; 
+      transition: width 0.2s ease;
+  }
+  
+  #hoverMenu a {
+      margin-bottom: 20px ;
+      display:block;
+  }
+  </style>
+
+
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+  <a href ="{% url 'wlist:create' %}" class="btn btn-secondary mb-2" tabindex="-1" role="button" aria-disabled="true">新規word</a>
+  <a href ="{% url 'wlist:memo_create' %}" class="btn btn-secondary mb-2" tabindex="-1" role="button" aria-disabled="true">新規memo</a>
+
+  {% for item in object_list %}
+  <div class="word-and-buttons">
+    <span class="word">{{ item.word }}</span>
+    <span class="mean1">{{ item.mean1 }}</span>
+    <span class="mean2">{{ item.mean2 }}</span>
+    <span class="word">{{ item.reg_date }}</span>
+    <span class="word">{{ item.user }}</span>
+    <!-- <p>登録日{{ item.reg_date | date:'  o/n/j'}}</p> -->
+    <div class="buttons">
+    <a href ="{% url 'wlist:update' item.pk %}" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">編集</a>
+    <a href ="{% url 'wlist:delete' item.pk %}" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">削除</a>
+    </div>
+  </div>
+  {% endfor %}
+  <!-- <a href ="{% url 'wlist:send_email' %}" class="btn btn-secondary mb-2" tabindex="-1" role="button" aria-disabled="true">メール送信</a> -->
+
+  <div class="container">
+    <h1 class="display-4">メモリスト</h1>
+    <a href ="{% url 'wlist:create' %}" class="btn btn-secondary mb-2" tabindex="-1" role="button" aria-disabled="true">新規word</a>
+    <a href ="{% url 'wlist:memo_create' %}" class="btn btn-secondary mb-2" tabindex="-1" role="button" aria-disabled="true">新規memo</a>  
+  </div>
+
+
+
+  {% for m in memo_list %}
+  <div class="word-and-buttons">
+    <span class="mean2">{{ m.memo }}</span>
+    <span class="word">{{ m.reg_date }}</span>
+    <span class="word">{{ m.user }}</span>
+    <!-- <p>登録日{{ item.reg_date | date:'  o/n/j'}}</p> -->
+    <div class="buttons">
+    <a href ="{% url 'wlist:memo_update' m.pk %}" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">編集</a>
+    <a href ="{% url 'wlist:memo_delete' m.pk %}" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">削除</a>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/cardslide.js' %}"></script>
+
+<div id="hoverMenu">
+    <a href="/" >TOP</a>
+    <a href="/accounts/login">LOG OUT</a>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const hoverMenu = document.getElementById('hoverMenu');
+      
+      window.addEventListener('mousemove', function(e) {
+          if (e.clientX < 100) {
+              hoverMenu.style.width = '100px'; 
+          } else {
+              hoverMenu.style.width = '0';             }
+      });
+  });
+</script>
+
+
+{% endblock content%}

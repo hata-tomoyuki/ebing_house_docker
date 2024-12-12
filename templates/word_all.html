@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link href="{% static 'style2.css' %}" rel="stylesheet">
+
+<style>
+
+    body {
+        margin: 0;
+        overflow: hidden;
+    }
+    #flashcard-container {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+    }
+    .flashcard {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        justify-content: center;
+        align-items: center;
+        /* font-size: 2em; */
+        text-align: center;
+        background: whitesmoke;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        transition: transform 0.5s ease-in-out;
+    }
+    .flashcard.hidden {
+        display: none;
+    }
+
+    .upperpart {
+        display: flex;
+        justify-content: center;
+        align-items: bottom;
+        /* align-content: center; */
+        background: whitesmoke;
+        /* background: #f0f0f0; */
+        font-size: 8em;
+        width:100%;
+    }
+
+    .underpart {
+        display: flex;
+        justify-content: center;
+        align-items: bottom;
+        width:100%;
+        font-size: 1.5rem;
+        background: #ececec;
+    }
+
+    .upperpart.p1{
+        height:30%;
+    }
+    .upperpart.p2{
+        height:30%;
+    }
+    .upperpart.p3{
+        height:30%;
+    }
+
+    .underpart.mean1.p1{
+        height:30%;
+    }
+    .underpart.mean1.p2{
+        height:67%;
+    }
+    .underpart.mean1.p3{
+        height:30%;
+        font-size: 2.5rem;
+    }
+
+    .underpart.mean2.p1{
+        height:30%;
+    }
+    .underpart.mean2.p2{
+        height:3%;
+    }
+    .underpart.mean2.p3{
+        height:30%;
+        font-size: 2.0rem;
+    }
+
+    .gray1,.gray2 {
+        /* opacity: 0; */
+        display: none;
+    } 
+
+    #hoverMenu {
+        position: fixed;
+        width: 100px;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: #333;
+        color: white;
+
+        text-align: center;
+        overflow: hidden; 
+        transition: width 0.2s ease;
+    }
+
+    #hoverMenu a {
+        margin-bottom: 20px ;
+        display:block;
+    }
+
+    .no-data {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-size: 24px; 
+        font-weight: bold; 
+        text-align: center;
+    }
+
+    .left-under, .right-under, .left-upper, .right-upper{
+        z-index: 2;
+        position: absolute;
+        top: 0;
+        height: 100%;
+        background-color: transparent;
+    }
+
+    @media (max-width: 576px){
+     #hoverMenu {
+        position: fixed; /* 最上部に固定 */
+        top: 0;          /* 画面の一番上に */
+        left: 0;         /* 左に固定 */
+        width: 100%;     /* 幅を100%に */
+        height: 6%;    /* 高さは自動調整 */
+        background-color: #333;
+    }
+    #hoverMenu a {
+        display: inline-block;
+        width: auto;
+        margin-right: 15px;
+        font-size: 1.5rem;
+        margin-bottom: 0px ;
+    }
+    a.mobile-hide {
+        display: none;
+    }
+
+    .upperpart {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 4em;
+        width:100%;
+    }
+
+    .underpart {
+        font-size: 1.5rem;
+    }
+  }
+
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hoverMenu = document.getElementById('hoverMenu');
+        
+        if (window.innerWidth > 576){   
+        window.addEventListener('mousemove', function(e) {
+            if (e.clientX < 100) {
+                hoverMenu.style.width = '100px'; 
+            } else {
+                hoverMenu.style.width = '0';             }
+        });
+    }
+    });
+
+</script>
+
+{% endblock head %}
+
+{% block content %}
+
+<div id="flashcard-container">
+    {% for card in all_records %}
+
+    <div class="flashcard {% if not forloop.first %}hidden{% endif %}" data-index="{{ forloop.counter0 }}">
+
+        <div class="upperpart p1" style="width: 100%; text-align: center; position: relative;">
+            <div class="left-upper" style="left: 0; width:35%; "></div>
+            <div class="right-upper" style="right: 0; width:65%; "></div>
+            <span style="z-index: 1">{{card.word}}</span>
+        </div>
+
+        <div class = 'underpart mean1 p1' style="align-content:center; width: 100%; text-align: center; position: relative;">
+            <div class="left-under" style="left: 0; width:35%; "></div>
+            <div class="right-under" style="right: 0; width:65%; "></div>
+
+            <span class="gray1" style="z-index: 1">{{ card.mean1 }}</span>
+            <!-- {% if card.img %} -->
+            <img class="gray2" src="{{ card.img.url }}" style="height:100%; margin:auto; z-index: 1"
+            onerror="this.onerror=null; this.src='/media/images/default.webp';">
+            <!-- {% else %} -->
+            <!-- <img class="gray2" src="/media/images/default.webp" style="height:100%;margin:auto;">
+            {% endif %} -->
+        </div>
+        <div class = 'underpart mean2 p1' style="align-content:top; width: 100%; text-align: center; position: relative;">
+            <div class="left-under"  style="left: 0; width:35%; "></div>
+            <div class="right-under" style="right: 0; width:65%; "></div>
+    
+            <span class ="gray1" style="z-index: 1">{{ card.mean2 }}</span>
+        </div>
+    </div>
+
+    {% empty %}
+    <div class="no-data">
+        記録されている単語がありません。
+        <div>
+            <a href="/" class="button">戻る</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/cardslide_word.js' %}"></script>
+
+
+
+<div id="hoverMenu">
+    <a href="/" >TOP</a>
+    <a href="/wlist/list_word" >英単語帳編集</a>
+    <a href="/accounts/login" class="mobile-hide">LOG OUT</a>
+</div>
+
+{% endblock content %}

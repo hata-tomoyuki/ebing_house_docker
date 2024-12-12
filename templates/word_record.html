@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link href="{% static 'style2.css' %}" rel="stylesheet">
+
+<style>
+  body, html {
+      align-items: center;
+      overflow-x: auto;
+  }
+
+  .center-container {
+  justify-content: center;
+  padding: "100px 20px 5px";
+}
+
+.flex-start-container {
+  justify-content: flex-start;
+  padding: 5%;
+}
+  
+  @media (max-width: 576px){
+     .form {
+     max-width:100% ;
+     min-width: 300px;
+     }
+
+     #hoverMenu {
+        position: fixed; /* 最上部に固定 */
+        top: 0;          /* 画面の一番上に */
+        left: 0;         /* 左に固定 */
+        width: 100%;     /* 幅を100%に */
+        height: 6%;    /* 高さは自動調整 */
+        background-color: #333;
+    }
+
+    /* メニュー内のリンクを横並びに */
+    #hoverMenu a {
+        display: inline-block;
+        width: auto;
+        margin-right: 15px;
+        font-size: 1.5rem;
+        margin-bottom: 0px ;
+    }
+
+    .mobile-hide, a.mobile-hide {
+        display: none;
+    }
+  }
+    
+  </style>
+
+{% endblock head %}
+
+{% block content %}
+
+
+<div class="{% if object_list|length > 7 %}flex-start-container{% else %}center-container{% endif %}"
+style="display: flex; flex-direction: column; align-items: center; width: 1000px; overflow-Y: auto;
+height:100vh;">
+
+<form action='' method='POST' style="margin-bottom: 50px; display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+    {% csrf_token %}
+    <label style="margin-bottom: 10px;">New Word:</label>
+    <input required type="text" name="{{ form.word.name }}" value="{{ form.word.value|default_if_none:'' }}" style="width: 100%; height: 45px; padding: 10px; font-size: 16px; margin-bottom: 10px;">
+    <input type="submit" value="create" style="width: 80px; height: 30px; font-size: 16px;">
+</form>
+<!-- <ul style="display: flex; flex-direction: column; align-items: flex-start; width: 800px;"> -->
+
+  <div style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;">
+  {% for record in object_list %}
+  <ul style="width: 100%; display: flex; justify-content: space-between;">
+      <li style="display: flex; width: 100%;">
+        <span style="flex: 1;">{{ record.word }}</span>
+        <span style="flex: 1;" class="mobile-hide">{{ record.mean1 }}</span>
+        <span style="flex: 7;">{{ record.mean2 }}</span>
+      </li>
+  </ul>
+  {% empty %}
+    本日の記録はありません。
+  {% endfor %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/cardslide.js' %}"></script>
+
+<div id="hoverMenu">
+  <a href="/" >TOP</a>
+  <a href="/wlist/list_word" >英単語帳編集</a>
+  <a href="/accounts/login" class="mobile-hide">LOG OUT</a>
+</div>
+
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const hoverMenu = document.getElementById('hoverMenu');
+      
+      if (window.innerWidth >576){
+      window.addEventListener('mousemove', function(e) {
+          if (e.clientX < 100) {
+              hoverMenu.style.width = '100px'; 
+          } else {
+              hoverMenu.style.width = '0';             }
+      });
+    }
+  });
+
+</script>
+
+{% endblock content %}

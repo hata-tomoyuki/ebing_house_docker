@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block head %}
+<link href="{% static 'style2.css' %}" rel="stylesheet">
+
+<style>
+body, html {
+    align-items: center;
+    overflow-x: auto;
+}
+
+@media (max-width: 576px){
+   .form {
+   max-width:100% ;
+   min-width: 300px;
+   }
+}
+
+</style>
+
+{% endblock head %}
+
+{% block content %}
+<form action = '' method='POST' style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+
+   {% csrf_token %}
+     <p style="color: silver">入力日時：{{ form.reg_date.value |date:"Y年n月j日"}}</p>
+     <!-- <p style="color: silver">ユーザー：{{ form.user.value }}</p> -->
+
+     <p>単語：{{ form.word }}</p>
+     <p>簡易：{{ form.mean1 }}</p>
+     <p>
+        <label for="mean2">詳細：</label>
+        <textarea id="mean2" name="mean2" rows="4" cols="250" style="width: 100%;">{{ form.mean2.value }}</textarea>
+     </p>
+
+     <p>チェック：
+     <label>
+         <input type="radio" name="fusen" value="True" {% if form.fusen.value %}checked{% endif %}> Yes
+     </label>
+     <label>
+         <input type="radio" name="fusen" value="False" {% if not form.fusen.value %}checked{% endif %}> No
+     </label>
+   </p>
+     <!-- <input type="text" name="{{ form.word.name }}" value="{{ form.word.value|default_if_none:'' }}" style="width: 100%; height: 45px; padding: 10px; font-size: 16px; margin-bottom: 10px;">
+     <input type="text" name="{{ form.mean1.name }}" value="{{ form.mean1.value|default_if_none:'' }}" style="width: 100%; height: 45px; padding: 10px; font-size: 16px; margin-bottom: 10px;">
+     <input type="text" name="{{ form.mean2.name }}" value="{{ form.mean2.value|default_if_none:'' }}" style="width: 100%; height: 45px; padding: 10px; font-size: 16px; margin-bottom: 10px;">
+ 
+      -->
+<input type='submit' value='update' style="width: 80px; height: 30px; font-size: 16px;">
+
+
+
+</form>
+{% endblock content %}

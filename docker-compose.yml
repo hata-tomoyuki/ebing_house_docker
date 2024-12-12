@@ -1,0 +1,38 @@
+version: '3'
+services:
+  db:
+    image: mysql:8.0
+    container_name: compose1_sql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    user: "mysql:mysql"
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql  # MySQLデータの永続化
+    networks:
+      - network1
+    env_file:
+      - .env  # .envファイルを指定
+  web:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+      - "35729:35729" # LiveReload
+    networks:
+        - network1
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
+networks:
+  network1:
+    driver: bridge

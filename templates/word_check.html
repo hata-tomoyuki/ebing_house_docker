@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link href="{% static 'style2.css' %}" rel="stylesheet">
+
+<style>
+    body, html {
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    .btn-custom {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 40px;
+        padding: 0px;
+        text-align: center;
+        vertical-align: middle;
+        border-radius: 4px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+</style>
+
+{% endblock head %}
+
+{% block content %}
+<form action = '' method='POST'> {% csrf_token %}
+    <p>チェック</p>
+<div class ='container' style="display: flex; gap: 0.5rem;">
+<input type='submit' value='delete' class='btn-custom'>
+<a href ="{% url 'wlist:list_word' %}" class="btn btn-outline-dark block btn-custom" role="button" aria-disabled="true" >NO</a>
+</div>
+
+</form>
+{% endblock content %}
